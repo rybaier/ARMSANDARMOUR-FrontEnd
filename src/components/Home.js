@@ -13,31 +13,32 @@ console.log(weapons, armour)
 //map through weapon data as to display individual weapon cards
     return (
         <Container>
-        <h1>Arms And Armour</h1>
-        <Row className='weapon-row' xxl='3'>
+        <h1 className='title'>Arms And Armour</h1>
+        <Link to="/create"><button>Add an Item</button></Link>
+        <div className='weapon-row'  >
         {weapons.map(weapon => {
             return(
                 <Card className='weapon-card'key={weapon.id}>
-                     <CardImg alt="weapon-image" src= {weapon.image}  top />
+                     <CardImg className='card-image' alt="weapon-image" src= {weapon.image}  top />
                     <CardTitle tag= {"h3"}>{weapon.name}</CardTitle>
                     {/* <CardText> {weapon.description} </CardText> */}
                      <Link to={`/weapon/${weapon._id}`} >Click for description</Link>
                 </Card>
             )
         })}
-        </Row>
-        <Row className='armour-row'xl='3'>
+        </div>
+        <div className='armour-row'>
         {armour.map(armour => {
             return(
-                <Card className='weapon-card'key={armour.id}>
-                     <CardImg alt="armour-image" src= {armour.image}  top/>
+                <div className='weapon-card'key={armour.id}>
+                     <CardImg className='card-image' alt="armour-image" src= {armour.image}  top/>
                     <CardTitle tag= {"h3"}>{armour.name}</CardTitle>
                     {/* <CardText> {armour.description} </CardText> */}
                      <Link to={`/armour/${armour._id}`} >Click for description</Link>
-                </Card>
+                </div>
             )
         })}
-        </Row>
+        </div>
         </Container>
     )
 }

@@ -18,7 +18,7 @@ const Armour = () =>{
     } else {
         return (
             <Container>
-                <Card className='armour-card'>
+                <Card className='armour-page'>
                     <CardTitle tag= {"h1"}>{myArmour.name}</CardTitle>
                     <CardImg className='pageimage' alt="armour-image" src= {myArmour.image} />
                     <CardText> {myArmour.description} </CardText>

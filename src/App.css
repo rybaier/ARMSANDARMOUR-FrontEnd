@@ -1,7 +1,37 @@
 .App {
   text-align: center;
 }
-
+.title {
+  text-align: center;
+}
 .weapon-card{
   margin: 10px;
+  width: 30%;
+  height: 100%
+}
+.armour-card{
+  margin: 10px;
+  width: 30%
+}
+.pageimage{
+  width: 50%;
+  height: 100vw
+}
+.card-image{
+  height: 50vw
+}
+.weapon-row{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.armour-row{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.submit-buttons{
+  margin: 20px;
+  display: flex;
+  align-self: center;
 }
