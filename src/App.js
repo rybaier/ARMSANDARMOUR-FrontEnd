@@ -30,6 +30,7 @@ function App() {
     .then((json) => setArmourData(json)))  
     //Get Data from backend
     //set Data to state 
+    .catch(console.error)
 
   }, [])
   console.log(weaponData)
@@ -44,8 +45,8 @@ function App() {
     <Container className='Home'>
        <Routes>
          <Route path= '/' element= {<Home weapons = {weaponData} setWeapons ={setWeaponData} armour = {armourData} setArmour = {setArmourData} />} />
-         <Route path='/armour' element= {<Armour armour = {armourData} setArmour = {setArmourData} />} />
-         <Route path= '/weapon' element= {<Weapon weapons = {weaponData} setWeapons ={setWeaponData} />} />
+         <Route path='/armour/:id' element= {<Armour armour = {armourData} setArmour = {setArmourData} />} />
+         <Route path= '/weapon/:id' element= {<Weapon weapons = {weaponData} setWeapons ={setWeaponData} />} />
        </Routes>
     </Container>
   );
