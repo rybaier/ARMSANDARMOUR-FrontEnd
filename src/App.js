@@ -17,15 +17,23 @@ function App() {
   const [armourData, setArmourData] = useState(null)
 
   //create async function to use for the data gather 
-  const URL = 'http://localhost:8000/'
+  const weaponURL = 'http://localhost:8000/'
+  const armourURL = 'http://localhost:8000/armours'
+
+
   useEffect(()=>{
-    fetch(URL)
+    fetch(weaponURL)
     .then(res => res.json())
-    .then(json => console.log(json))
+    .then(json => setWeaponData(json))
+    .then(fetch(armourURL)
+    .then(res => res.json())
+    .then((json) => setArmourData(json)))  
     //Get Data from backend
     //set Data to state 
 
   }, [])
+  console.log(weaponData)
+  console.log(armourData)
   if (weaponData === null || armourData === null ){
     return(
       <h1> Loading Arms and Armour</h1>
@@ -36,8 +44,8 @@ function App() {
     <Container className='Home'>
        <Routes>
          <Route path= '/' element= {<Home weapons = {weaponData} setWeapons ={setWeaponData} armour = {armourData} setArmour = {setArmourData} />} />
-         <Route path='./components/Armour.js' element= {<Armour armour = {armourData} setArmour = {setArmourData} />} />
-         <Route path= './components/Weapon.js' element= {<Weapon weapons = {weaponData} setWeapons ={setWeaponData} />} />
+         <Route path='/armour' element= {<Armour armour = {armourData} setArmour = {setArmourData} />} />
+         <Route path= '/weapon' element= {<Weapon weapons = {weaponData} setWeapons ={setWeaponData} />} />
        </Routes>
     </Container>
   );
