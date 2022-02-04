@@ -4,9 +4,9 @@ import { InputGroup, Button, ButtonGroup, InputGroupText, Input, Container } fro
 
 const CreateForm = () => {
     const initItemState = {
-        name: null,
-        description: null,
-        image: null
+        name: "",
+        description: "",
+        image: ""
     }
     const initFormState = {
         queryType: "",
@@ -14,18 +14,26 @@ const CreateForm = () => {
     const [formState, setFormState] = useState(initFormState);
     const [itemState, setItemState] = useState(initItemState);
     //Handle submit function
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-
+        //take input value from handle change = true 
+        //await setForm State query type value
+        //await querytype value then 
         //send post request
         switch(formState.queryType){
             case "weapon":
                 console.log("in weapon case");
-                fetch("http://localhost:8000/weap")
+                fetch("http://localhost:8000/weapons",{
+                    method: "POST",
+                    body: itemState
+                }).then(response => response.json());
                 break;
             case "armour":
                 console.log("in armour case");
-
+                fetch("http://localhost:8000/armour", {
+                    method: "POST",
+                    body: itemState
+                }).then(response => response.json());
                 break;
 
             default:
@@ -33,29 +41,40 @@ const CreateForm = () => {
         }
 
         setFormState(initFormState);
+        setItemState(initItemState);
     }
+
     //Handle change function
+    // take name value on change
+    // take image url on change 
+    //take description on change 
+      //set the state of item state to current values of all three forms 
+    const handleChange = (event) => {
+        event.preventDefault()
+        setItemState({...itemState, [event.target.id]: event.target.value});
+        console.log(itemState)
+    }
 
     return(
         <Container>
             <InputGroup>
                 <InputGroupText >Name</InputGroupText>
-                <Input placeholder="Name of thing" />
+                <Input id="name" onChange={handleChange} value={itemState.name} placeholder="Name of thing" />
             </InputGroup>
             <br />
             <InputGroup>
                 <InputGroupText >Image URL</InputGroupText>
-                <Input placeholder="url" />
+                <Input id="image" onChange={handleChange} value={itemState.image} placeholder="url" />
             </InputGroup>
             <br />
             <InputGroup>
                 <InputGroupText >Description</InputGroupText>
-                <Input type="textarea" placeholder="Your Text" />
+                <Input id="description" onChange={handleChange} value={itemState.description} type="textarea" placeholder="Your Text" />
             </InputGroup>
             <br />
             <ButtonGroup className='finalize-form'>
-                <Button className='submit-buttons'>Add a Weapon</Button>
-                <Button className='submit-buttons'>Add Armour</Button>
+                <Button value= {handleChange} onClick={handleSubmit} className='submit-buttons'>Add a Weapon</Button>
+                <Button value= {handleChange} onClick={handleSubmit} className='submit-buttons'>Add Armour</Button>
             </ButtonGroup>
         </Container>
     )
