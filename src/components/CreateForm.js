@@ -8,10 +8,15 @@ const CreateForm = () => {
         description: "",
         image: ""
     }
-    const initFormState = {
-        queryType: "",
-    }
-    const [formState, setFormState] = useState(initFormState);
+    // const initFormState = {
+    //     queryType: "",
+    // }
+    // const [formState, setFormState] = useState(initFormState);
+    // let queryType = {
+    //     weapon : "weapon",
+    //     armour : "armour"
+    // };
+    let queryType= "";
     const [itemState, setItemState] = useState(initItemState);
     //Handle submit function
     const handleSubmit = async (event) => {
@@ -20,28 +25,44 @@ const CreateForm = () => {
         //await setForm State query type value
         //await querytype value then 
         //send post request
-        switch(formState.queryType){
+        // setFormState({queryType: event.target.value});
+        console.log(event);
+        console.log(queryType);
+        switch(queryType){
             case "weapon":
                 console.log("in weapon case");
+                console.log(itemState)
                 fetch("http://localhost:8000/weapons",{
                     method: "POST",
-                    body: itemState
-                }).then(response => response.json());
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(itemState)
+                }).then(response => response.json())
+                .then(itemState => {
+                    console.log('Success:', itemState);
+                });
                 break;
             case "armour":
                 console.log("in armour case");
-                fetch("http://localhost:8000/armour", {
+                fetch("http://localhost:8000/armours", {
                     method: "POST",
-                    body: itemState
-                }).then(response => response.json());
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(itemState)
+                }).then(response => response.json())
+                .then(itemState => {
+                    console.log('Success:', itemState);
+                });
                 break;
 
             default:
                 console.log("default case do nothing");
         }
 
-        setFormState(initFormState);
-        setItemState(initItemState);
+       
+        
     }
 
     //Handle change function
@@ -51,8 +72,8 @@ const CreateForm = () => {
       //set the state of item state to current values of all three forms 
     const handleChange = (event) => {
         event.preventDefault()
-        setItemState({...itemState, [event.target.id]: event.target.value});
-        console.log(itemState)
+        setItemState({ ...itemState, [event.target.id]: event.target.value,});
+        console.log(itemState);
     }
 
     return(
@@ -73,8 +94,8 @@ const CreateForm = () => {
             </InputGroup>
             <br />
             <ButtonGroup className='finalize-form'>
-                <Button value= {handleChange} onClick={handleSubmit} className='submit-buttons'>Add a Weapon</Button>
-                <Button value= {handleChange} onClick={handleSubmit} className='submit-buttons'>Add Armour</Button>
+                <Button type="submit" value= {"weapon"} onClick={(event) => {queryType = "weapon"; handleSubmit(event)}} className='submit-buttons'>Add a Weapon</Button>
+                <Button type="submit" value= {"armour"} onClick={(event) => {queryType = "armour"; handleSubmit(event)}} className='submit-buttons'>Add Armour</Button>
             </ButtonGroup>
         </Container>
     )
