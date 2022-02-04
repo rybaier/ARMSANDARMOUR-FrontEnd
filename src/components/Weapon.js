@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom';
 import { Card, CardTitle, CardText, Container, Col, Row, CardImg} from 'reactstrap'
+import CreateForm from './CreateForm';
 
 const Weapon = () =>{
     const myID = useParams();
     const [myWeapon, setMyWeapon] = useState(null);
-
-    //update function onClick s
+  
     console.log(myID);
     useEffect(()=> {
         fetch(`http://localhost:8000/weapons/${myID.id}`)
@@ -26,6 +26,7 @@ const Weapon = () =>{
                 <CardText tag={'p'}> {myWeapon.description} </CardText>
                 {/* update form */}
             </div>
+            <CreateForm myID={myID} inArmor={false} item={myWeapon}/>
         </Container>
     )
     }

@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom';
 import { Card, CardTitle, CardText, Container, Col, Row, CardImg} from 'reactstrap'
+import CreateForm from './CreateForm';
 
 const Armour = () =>{
+    const inArmor = true;
     const myID = useParams();
     const [myArmour, setMyArmour] = useState(null);
     console.log(myID);
@@ -23,6 +25,7 @@ const Armour = () =>{
                     <CardImg className='pageimage' alt="armour-image" src= {myArmour.image} />
                     <CardText> {myArmour.description} </CardText>
                 </Card>
+                <CreateForm myID= {myID} inArmor={inArmor} item={myArmour}/>
             </Container>
         )
     }

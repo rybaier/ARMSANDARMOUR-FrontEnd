@@ -1,21 +1,17 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import { InputGroup, Button, ButtonGroup, InputGroupText, Input, Container } from 'reactstrap';
+import { InputGroup, Button, ButtonGroup, InputGroupText, Input, Container, NavLink } from 'reactstrap';
+import { Link, useNavigate } from 'react-router-dom';
 
-const CreateForm = () => {
+const CreateForm = ({myID, inArmour, item}) => {
+    let navigate = useNavigate();
+
     const initItemState = {
-        name: "",
-        description: "",
-        image: ""
+        name: item.name,
+        description: item.description,
+        image: item.image
     }
-    // const initFormState = {
-    //     queryType: "",
-    // }
-    // const [formState, setFormState] = useState(initFormState);
-    // let queryType = {
-    //     weapon : "weapon",
-    //     armour : "armour"
-    // };
+    
     let queryType= "";
     const [itemState, setItemState] = useState(initItemState);
     //Handle submit function
@@ -29,40 +25,79 @@ const CreateForm = () => {
         console.log(event);
         console.log(queryType);
         switch(queryType){
-            case "weapon":
-                console.log("in weapon case");
+            case "update":
+                console.log("in update case");
                 console.log(itemState)
-                fetch("http://localhost:8000/weapons",{
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(itemState)
-                }).then(response => response.json())
-                .then(itemState => {
-                    console.log('Success:', itemState);
-                });
+                // console.log(JSON.stringify(itemState));
+                if(inArmour){
+                    fetch(`http://localhost:8000/armours/${myID.id}`,{
+                        method: "PUT",
+
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify(itemState)
+                    }).then(response => response.json())
+                    .then(itemState => {
+                        console.log('Success:', itemState);
+                    })
+                    .then(() => {navigate("/")})
+                    .catch(console.err);
+                } else {
+                    fetch(`http://localhost:8000/weapons/${myID.id}`,{
+                        method: "PUT",
+
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify(itemState)
+                    }).then(response => response.json())
+                    .then(itemState => {
+                        console.log('Success:', itemState);
+                   
+                    })
+                    .then(() => {navigate("/")})
+                    .catch(console.err);
+                }
+                    
+                
                 break;
-            case "armour":
-                console.log("in armour case");
-                fetch("http://localhost:8000/armours", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(itemState)
-                }).then(response => response.json())
-                .then(itemState => {
-                    console.log('Success:', itemState);
-                });
-                break;
+                case "delete":
+                    console.log("in delete case");
+                    console.log(itemState)
+                    if(inArmour) {
+                        fetch(`http://localhost:8000/armours/${myID.id}`,{
+                            method: "DELETE",
+    
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                            },
+                        })
+                        .then(() => {navigate("/")})
+                        .catch(console.err);
+
+                    } else {
+                        fetch(`http://localhost:8000/weapons/${myID.id}`,{
+                            method: "DELETE",
+    
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                            },
+                        })
+                        .then(() => {navigate("/")})
+                        .catch(console.err);
+                    }   
+                    
+                    break;
+                       
 
             default:
                 console.log("default case do nothing");
-        }
-
-       
-        
+        }  
     }
 
     //Handle change function
@@ -76,6 +111,8 @@ const CreateForm = () => {
         console.log(itemState);
     }
 
+    //if there's an id, make new layout here with the update button
+    //else do the layout we have right now
     return(
         <Container>
             <InputGroup>
@@ -94,11 +131,12 @@ const CreateForm = () => {
             </InputGroup>
             <br />
             <ButtonGroup className='finalize-form'>
-                <Button type="submit" value= {"weapon"} onClick={(event) => {queryType = "weapon"; handleSubmit(event)}} className='submit-buttons'>Add a Weapon</Button>
-                <Button type="submit" value= {"armour"} onClick={(event) => {queryType = "armour"; handleSubmit(event)}} className='submit-buttons'>Add Armour</Button>
+                <Button type="submit" value= {"update"} onClick={(event) => {queryType = "update"; handleSubmit(event)}} className='submit-buttons'>Update</Button> 
+                <Button type="submit" value= {"delete"} onClick={(event) => {queryType = "delete"; handleSubmit(event)}} className='submit-buttons'>Delete</Button> 
             </ButtonGroup>
         </Container>
     )
+    
 }
 
 export default CreateForm;
